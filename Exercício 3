@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+// Função para encontrar o menor e o maior elemento do array
+void menor_maior_array(int arr[], int tamanho, int *menor, int *maior) {
+    if (tamanho == 0) {
+        // Se o array estiver vazio, não há menor e maior
+        *menor = *maior = 0;
+        return;
+    }
+
+    *menor = *maior = arr[0]; // Inicializa o menor e o maior com o primeiro elemento
+
+    for (int i = 1; i < tamanho; i++) {
+        if (arr[i] < *menor) {
+            *menor = arr[i]; // Encontrou um novo menor elemento
+        } else if (arr[i] > *maior) {
+            *maior = arr[i]; // Encontrou um novo maior elemento
+        }
+    }
+}
+
+int main() {
+    int arr[] = {5, 7, 9, 6};
+    int tamanho = sizeof(arr) / sizeof(arr[0]);
+    int menor, maior;
+
+    menor_maior_array(arr, tamanho, &menor, &maior);
+
+    printf("Menor elemento do array: %d\n", menor);
+    printf("Maior elemento do array: %d\n", maior);
+
+    return 0;
+}
