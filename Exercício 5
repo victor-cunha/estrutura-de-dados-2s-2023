@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+// Função para multiplicar elementos de dois arrays e armazenar o resultado em um terceiro array
+void multiplica_array(int arr1[], int arr2[], int resultado[], int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        resultado[i] = arr1[i] * arr2[i];
+    }
+}
+
+int main() {
+    int arr1[] = {5, 7, 9, 6};
+    int arr2[] = {5, 7, 9, 6};
+    int tamanho = sizeof(arr1) / sizeof(arr1[0]);
+
+    int resultado[tamanho]; // Array para armazenar os resultados da multiplicação
+
+    multiplica_array(arr1, arr2, resultado, tamanho);
+
+    printf("Resultado da multiplicação dos arrays: [");
+    for (int i = 0; i < tamanho; i++) {
+        printf("%d", resultado[i]);
+        if (i < tamanho - 1) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+
+    return 0;
+}
