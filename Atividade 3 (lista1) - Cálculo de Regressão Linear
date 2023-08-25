@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    double x;
+    double y;
+} Ponto;
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        printf("Uso: %s <arquivo.csv>\n", argv[0]);
+        return 1;
+    }
+
+    FILE *file = fopen(argv[1], "r");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    int numRegistros = 0;
+    char line[100];
+    while (fgets(line, sizeof(line), file)) {
+        numRegistros++;
+    }
+    rewind(file);
+
+    Ponto *pontos = (Ponto *)malloc(numRegistros * sizeof(Ponto));
+    if (pontos == NULL) {
+        printf("Erro na alocação de memória.\n");
+        fclose(file);
+        return 1;
+    }
+
+    for (int i = 0; i < numRegistros; i++) {
+        if (fscanf(file, "%lf,%lf", &pontos[i].x, &pontos[i].y) != 2) {
+            printf("Erro ao ler os dados do arquivo.\n");
+            free(pontos);
+            fclose(file);
+            return 1;
+        }
+    }
+
+    fclose(file);
+
+    double sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+    for (int i = 0; i < numRegistros; i++) {
+        sumX += pontos[i].x;
+        sumY += pontos[i].y;
+        sumXY += pontos[i].x * pontos[i].y;
+        sumX2 += pontos[i].x * pontos[i].x;
+    }
+
+    double meanX = sumX / numRegistros;
+    double meanY = sumY / numRegistros;
+
+    double slope = (sumXY - numRegistros * meanX * meanY) / (sumX2 - numRegistros * meanX * meanX);
+    double intercept = meanY - slope * meanX;
+
+    printf("Regressão Linear: y = %.2lfx + %.2lf\n", slope, intercept);
+
+    free(pontos);
+
+    return 0;
+}
